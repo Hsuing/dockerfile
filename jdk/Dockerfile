@@ -20,3 +20,4 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 
 # 设置tini作为entrypoint
 # ENTRYPOINT ["/sbin/tini", "--"]
+# ENTRYPOINT tini java -Djava.security.egd=file:/dev/./urandom  -jar -Xms1024m -Xmx2048m /app.jar
