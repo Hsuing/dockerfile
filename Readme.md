@@ -39,5 +39,11 @@ docker build -f /root/jdk/baseDockerfile . -t base-alpine:latest
 
 #生成jdk
 docker build -f /root/jdk/jdkDockerfile . -t jdk:1.8
+
+
+[root@k8s-master01 jdk]# docker images;
+REPOSITORY                                                    TAG       IMAGE ID       CREATED             SIZE
+jdk                                                           1.8    cf1ec13fdf8a      About an hour ago   180MB
+base-alpine                                                   latest    8c57dd67eeda   About an hour ago   15.9MB
 ```
 
