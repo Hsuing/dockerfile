@@ -31,3 +31,13 @@ CMD ["java", "-jar -Xms1024m -Xmx2048m", "myapp.jar"]
 
 ```
 
+* 缩小体积
+
+```bash
+#生成base镜像
+docker build -f /root/jdk/baseDockerfile . -t base-alpine:latest
+
+#生成jdk
+docker build -f /root/jdk/jdkDockerfile . -t jdk:1.8
+```
+
