@@ -1,0 +1,9 @@
+FROM jdk:1.8 AS build
+ENV VERSION=3.5.4-beta
+ENV NAME=zookeeper
+RUN  mkdir "/vela"
+COPY ${NAME}-${VERSION}.jar /vela
+
+
+ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom  -jar -Xms200m -Xmx300m /vela/zookeeper-3.5.4-beta.jar
+EXPOSE 10090

@@ -1,31 +1,31 @@
 FROM alpine:latest
 
-ENV TZ=AsiaShanghai
-RUN echo httpmirrors.aliyun.comalpinev3.15main  etcapkrepositories
-RUN echo httpmirrors.aliyun.comalpinev3.15community  etcapkrepositories
-RUN apk update && 
-    apk add --no-cache tzdata && 
+ENV TZ=Asia/Shanghai
+RUN echo "http://mirrors.aliyun.com/alpine/v3.15/main/" > /etc/apk/repositories
+RUN echo "http://mirrors.aliyun.com/alpine/v3.15/community/" >> /etc/apk/repositories
+RUN apk update && \
+    apk add --no-cache tzdata && \
     apk add --no-cache tini
 
-RUN ln -snf usrsharezoneinfo$TZ etclocaltime && echo $TZ  etctimezone
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY jdk-8u391-linux-x64.tar.gz tmpjdk.tar.gz
+COPY jdk-8u391-linux-x64.tar.gz /tmp/jdk.tar.gz
 
-RUN mkdir optjava && 
-    tar -xf tmpjdk.tar.gz -C optjava --strip-components=1
+RUN mkdir /opt/java && \
+    tar -xf /tmp/jdk.tar.gz -C /opt/java --strip-components=1
 
-ENV JAVA_HOME optjava
-ENV PATH $PATH$JAVA_HOMEbin
+ENV JAVA_HOME="/opt/java" \
+	PATH="$PATH:${JAVA_HOME}/bin"
 
-RUN  mkdir vela
+RUN  mkdir "/vela"
 
-COPY zookeeper-3.5.4-beta.jar velazookeeper-3.5.4-beta.jar
+COPY zookeeper-3.5.4-beta.jar /vela/zookeeper-3.5.4-beta.jar
 
 # 设置tini作为entrypoint
-ENTRYPOINT [sbintini,--]
+ENTRYPOINT ["/sbin/tini","--"]
 
-CMD [java, -version]
+CMD ["java", "-version"]
 
-#CMD [java, -jar -Xms500m -Xmx1024m, velazookeeper-3.5.4-beta.jar] 
+#CMD ["java"," -jar -Xms500m -Xmx1024m", "/vela/zookeeper-3.5.4-beta.jar"] 
 
-#CMD [java,-Djava.security.egd=filedev.urandom,-jar,app.jar]
+#CMD ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/app.jar"]
