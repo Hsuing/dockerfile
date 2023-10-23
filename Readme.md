@@ -47,3 +47,28 @@ jdk                                                           1.8    cf1ec13fdf8
 base-alpine                                                   latest    8c57dd67eeda   About an hour ago   15.9MB
 ```
 
+## 2.tomcat
+
+
+
+## 3.tini
+
+**tini 启动程序** 在 *Docker* 1.13 或更高版本中，已经集成了 *tini* 启动程序
+
+*docker run方式：*
+
+```
+docker run --init 镜像名称
+```
+
+*docker-compose方式：*
+
+```bash
+version: '2.4'
+services:  
+  dmga-dg-portal:
+    build: ./apps/dmga-dg-portal
+    image: dmga-dg-portal:latest
+    init: true  # 指定启动进程为tini
+```
+

@@ -1,0 +1,23 @@
+# 拷贝war包并解压
+ARG NAME="dmga-cas"
+ARG DOC_PATH="/${NAME}"
+FROM jdk:1.8 AS build
+ARG NAME
+ARG DOC_PATH
+ENV VERSION=3.0.1
+COPY ${NAME}-${VERSION}-SNAPSHOT.war /opt/apps/${NAME}/
+RUN cd /opt/apps/${NAME} \
+    && jar -xvf ${NAME}-${VERSION}-SNAPSHOT.war \
+    && rm -rf ${NAME}-${VERSION}-SNAPSHOT.war
+
+# 设置server.xml，设置CMD及ENTRYPOINT
+FROM tomcat8:latest
+LABEL maintainer="xiong.han"
+ARG NAME
+ARG DOC_PATH
+ENV JAVA_OPTS="-server -Xmx256m -Xms128m -Xmn64m"
+COPY --from=build /opt/apps /opt/apps
+RUN sed -i "/<\/Host>/i\<Context path=\"/${DOC_PATH}\" docBase=\"/opt/apps/${NAME}\" reloadable=\"false\" />" ${TOMCAT_HOME}/conf/server.xml
+EXPOSE 8080
+CMD [ "catalina.sh", "run" ]
+ENTRYPOINT [ "entrypoint.sh" ]
