@@ -1,4 +1,4 @@
-FROM alpinelatest
+FROM alpine:latest
 
 ENV TZ=AsiaShanghai
 RUN echo httpmirrors.aliyun.comalpinev3.15main  etcapkrepositories
