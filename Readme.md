@@ -72,3 +72,5 @@ services:
     init: true  # 指定启动进程为tini
 ```
 
+## 4.dotnet
+
