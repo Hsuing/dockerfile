@@ -1,5 +1,5 @@
 FROM golang:1.17 as builder
-
+LABEL maintainer="xiong.han"
 WORKDIR /app
 COPY . .
 
